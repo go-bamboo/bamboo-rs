@@ -1,0 +1,18 @@
+[package]
+name = "bamboo-status"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+thiserror = { workspace = true }
+serde = { workspace = true }
+prost = { workspace = true }
+
+axum = { workspace = true }
+tonic = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }
