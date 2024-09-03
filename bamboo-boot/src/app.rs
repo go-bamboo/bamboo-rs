@@ -1,21 +1,24 @@
 use std::any::Any;
 use std::sync::Arc;
+use dashmap::DashMap;
 use tokio_graceful::Shutdown;
 use bamboo_status::status::{Result, AnyResult};
-use crate::add;
+use crate::component::ComponentRef;
 use crate::plugin::Plugin;
 
-pub struct App {
-    plugins: Vec<dyn Plugin>,
+pub type Registry<T> = DashMap<String, T>;
+
+pub struct App<C> {
+    conf : Arc<C>,
+    components: Registry<ComponentRef>,
 }
 
-impl<C, P> App
-    where C: Any,
-          P: Plugin,
+impl<C> App<C>
 {
-    fn new() -> Self {
+    fn new(conf: Arc<C>) -> Self {
         Self {
-            plugins: Vec::new(),
+            conf,
+            components: Registry::new(),
         }
     }
 
@@ -23,13 +26,23 @@ impl<C, P> App
         "App"
     }
 
-    fn with(&mut self, p: P) ->&mut Self {
+    fn with(&mut self, p: ComponentRef) ->&mut Self {
         self
     }
 
-    pub async fn run(&self, conf: Arc<C>) -> AnyResult<()> {
+    pub async fn run(&self) -> AnyResult<()> {
         let shutdown = Shutdown::default();
-        let block_conf = Arc::clone(&conf);
+
+
+        let it = self.components.iter();
+        for val in it {
+            let block_conf = Arc::clone(&self.conf);
+            let _ = shutdown.spawn_task_fn(|guard: tokio_graceful::ShutdownGuard| async move {
+                // sol_serve(http_conf, guard, block1).await
+            });
+        }
+
+
         // let http_block = Arc::new(Block::new(block_conf)?);
         // let grpc_block = Arc::clone(&http_block);
 
@@ -61,9 +74,17 @@ impl<C, P> App
 mod tests {
     use super::*;
 
+    struct Config {}
+
+    impl Config {
+        fn new()->Self {
+            Self{}
+        }
+    }
+
     #[test]
     fn it_works() {
-        let app = App::new();
-        assert_eq!(app.name(), "OK");
+        let app = App::new(Arc::new(Config::new()));
+        assert_eq!(app.name(), "App");
     }
 }

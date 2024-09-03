@@ -1,6 +1,7 @@
 pub mod app;
 pub mod builder;
 pub mod plugin;
+mod component;
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right
