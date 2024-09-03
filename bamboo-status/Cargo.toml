@@ -8,9 +8,12 @@ edition.workspace = true
 
 [dependencies]
 thiserror = { workspace = true }
+anyhow = { workspace = true }
 serde = { workspace = true }
+tokio = { workspace = true }
 prost = { workspace = true }
-
+bytes = { workspace = true }
+validator = { workspace = true }
 axum = { workspace = true }
 tonic = { workspace = true }
 

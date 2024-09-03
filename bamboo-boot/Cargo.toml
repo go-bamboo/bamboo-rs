@@ -12,3 +12,4 @@ futures = { workspace = true }
 tokio = { workspace = true }
 tokio-stream = { workspace = true }
 tokio-graceful = { workspace = true }
+bamboo-status = { workspace = true }

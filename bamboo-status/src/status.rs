@@ -14,18 +14,14 @@ use tonic::{
 };
 use tokio::sync::TryLockError;
 use validator::{ValidationError, ValidationErrors};
-
-use solana_client::{
-    client_error::ClientError as SolanaClientError, pubsub_client::PubsubClientError,
-};
-use solana_sdk::pubkey::ParsePubkeyError;
+use axum::extract::rejection::{FormRejection, JsonRejection};
 
 use crate::errors::Status;
+use crate::spring::SpringResponse;
 
 pub type Result<T, E = Status> = std::result::Result<T, E>;
+
 pub use anyhow::Result as AnyResult;
-use axum::extract::rejection::{FormRejection, JsonRejection};
-use crate::spring::SpringResponse;
 
 
 impl Status {
@@ -79,104 +75,71 @@ impl From<tonic::Status> for Status {
     }
 }
 
-impl From<SolanaClientError> for Status {
-    fn from(value: SolanaClientError) -> Self {
-        Status {
-            code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
-            reason: "".to_string(),
-            message: value.to_string(),
-            metadata: Default::default(),
-        }
-    }
-}
-
-impl From<PubsubClientError> for Status {
-    fn from(value: PubsubClientError) -> Self {
-        Status {
-            code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
-            reason: "".to_string(),
-            message: value.to_string(),
-            metadata: Default::default(),
-        }
-    }
-}
-
-impl From<ParsePubkeyError> for Status {
-    fn from(value: ParsePubkeyError) -> Self {
-        Status {
-            code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
-            reason: crate::tran::ecode::ErrorReason::ParsePubkeyError.as_str_name().to_string(),
-            message: value.to_string(),
-            metadata: Default::default(),
-        }
-    }
-}
-
-impl From<TryLockError> for Status {
-    fn from(value: TryLockError) -> Self {
-        Status {
-            code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
-            reason: crate::tran::ecode::ErrorReason::TryLockError.as_str_name().to_string(),
-            message: value.to_string(),
-            metadata: Default::default(),
-        }
-    }
-}
-
-impl From<tonic::transport::Error> for Status {
-    fn from(value: Error) -> Self {
-        Status {
-            code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
-            reason: crate::tran::ecode::ErrorReason::TonicTransportErr.as_str_name().to_string(),
-            message: value.to_string(),
-            metadata: Default::default(),
-        }
-    }
-}
-
-impl From<ValidationError> for Status {
-    fn from(value: ValidationError) -> Self {
-        Status {
-            code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
-            reason: crate::tran::ecode::ErrorReason::ValidationError.as_str_name().to_string(),
-            message: value.to_string(),
-            metadata: Default::default(),
-        }
-    }
-}
-
-impl From<ValidationErrors> for Status {
-    fn from(value: ValidationErrors) -> Self {
-        Status {
-            code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
-            reason: crate::tran::ecode::ErrorReason::ValidationError.as_str_name().to_string(),
-            message: value.to_string(),
-            metadata: Default::default(),
-        }
-    }
-}
-
-impl From<FormRejection> for Status {
-    fn from(value: FormRejection) -> Self {
-        Status {
-            code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
-            reason: crate::tran::ecode::ErrorReason::ValidationError.as_str_name().to_string(),
-            message: value.to_string(),
-            metadata: Default::default(),
-        }
-    }
-}
-
-impl From<JsonRejection> for Status {
-    fn from(value: JsonRejection) -> Self {
-        Status {
-            code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
-            reason: crate::tran::ecode::ErrorReason::ValidationError.as_str_name().to_string(),
-            message: value.to_string(),
-            metadata: Default::default(),
-        }
-    }
-}
+// impl From<TryLockError> for Status {
+//     fn from(value: TryLockError) -> Self {
+//         Status {
+//             code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
+//             reason: crate::tran::ecode::ErrorReason::TryLockError.as_str_name().to_string(),
+//             message: value.to_string(),
+//             metadata: Default::default(),
+//         }
+//     }
+// }
+//
+// impl From<tonic::transport::Error> for Status {
+//     fn from(value: Error) -> Self {
+//         Status {
+//             code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
+//             reason: crate::tran::ecode::ErrorReason::TonicTransportErr.as_str_name().to_string(),
+//             message: value.to_string(),
+//             metadata: Default::default(),
+//         }
+//     }
+// }
+//
+// impl From<ValidationError> for Status {
+//     fn from(value: ValidationError) -> Self {
+//         Status {
+//             code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
+//             reason: crate::tran::ecode::ErrorReason::ValidationError.as_str_name().to_string(),
+//             message: value.to_string(),
+//             metadata: Default::default(),
+//         }
+//     }
+// }
+//
+// impl From<ValidationErrors> for Status {
+//     fn from(value: ValidationErrors) -> Self {
+//         Status {
+//             code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
+//             reason: crate::tran::ecode::ErrorReason::ValidationError.as_str_name().to_string(),
+//             message: value.to_string(),
+//             metadata: Default::default(),
+//         }
+//     }
+// }
+//
+// impl From<FormRejection> for Status {
+//     fn from(value: FormRejection) -> Self {
+//         Status {
+//             code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
+//             reason: crate::tran::ecode::ErrorReason::ValidationError.as_str_name().to_string(),
+//             message: value.to_string(),
+//             metadata: Default::default(),
+//         }
+//     }
+// }
+//
+// impl From<JsonRejection> for Status {
+//     fn from(value: JsonRejection) -> Self {
+//         Status {
+//             code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
+//             reason: crate::tran::ecode::ErrorReason::ValidationError.as_str_name().to_string(),
+//             message: value.to_string(),
+//             metadata: Default::default(),
+//         }
+//     }
+// }
 
 impl Into<tonic::Status> for Status {
     fn into(self) -> tonic::Status {
@@ -203,15 +166,15 @@ mod tests {
 
     #[test]
     fn test_status_eq() {
-        let a = Status::new(address::ecode::ErrorReason::UserNotFound.as_str_name(), "");
-        let b = Status::new(address::ecode::ErrorReason::UserNotFound.as_str_name(), "");
+        let a = Status::new("UserNotFound", "");
+        let b = Status::new("UserNotFound", "");
         assert_eq!(a, b);
     }
 
     #[test]
     fn test_status_eq1() {
-        let a = Status::new(address::ecode::ErrorReason::UserNotFound.as_str_name(), "a");
-        let b = Status::new(address::ecode::ErrorReason::UserNotFound.as_str_name(), "b");
+        let a = Status::new("UserNotFound", "a");
+        let b = Status::new("UserNotFound", "b");
         assert_ne!(a, b);
     }
 }
