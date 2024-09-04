@@ -7,6 +7,9 @@ use bamboo_status::status::AnyResult;
 
 #[async_trait]
 pub trait Plugin: Any + Send + Sync {
+    fn name(&self) -> &str {
+        std::any::type_name::<Self>()
+    }
     async fn serve(&self, guard: ShutdownGuard) -> AnyResult<()>;
 }
 
