@@ -51,6 +51,8 @@ tonic-health = { version = "0.10.2" }
 axum = { version = "0.6.20" }
 
 # tower
+tower-service = { version = "0.3.2" }                   # 这是中间接口
+tower-layer = { version = "0.3.2" }                     # 这是中间件接口
 tower = { version = "0.4.0", features = ["full"] }
 tower-http = { version = "0.4.0", features = ["full"] }
 
@@ -72,13 +74,9 @@ rust_decimal = { version = "1.30", features = ["serde", "serde-str"] }
 rust_decimal_macros = "1.30"
 
 # lib
-api = { git = "https://github.com/go-bamboo/api.git" }
-# api = { path = "../api" }
-ecode = { path = "./ecode" }
-rest = { path = "./rest" }
-rpc = { path = "./rpc" }
-data = { path = "./data" }
 bamboo-status = { path = "./bamboo-status"}
+bamboo-log = { path = "./bamboo-log"}
+bamboo-boot = { path = "./bamboo-boot"}
 
 
 

@@ -33,9 +33,9 @@ impl<C> App<C>
         let shutdown = Shutdown::default();
 
         let it = self.components.iter();
-        for val in it {
+        for kv in it {
             let block_conf = Arc::clone(&self.conf);
-            let t = val.value();
+            let t = kv.value().clone();
             let _ = shutdown.spawn_task_fn(|guard: tokio_graceful::ShutdownGuard| async move {
                 let _ = t.serve(guard).await;
             });
