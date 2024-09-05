@@ -1,4 +1,3 @@
-use http::Request;
 use log::Level;
 use tower_http::trace::OnRequest;
 use tracing::Span;
@@ -42,12 +41,13 @@ impl DefaultOnRequest {
     }
 }
 
+
 impl<B> OnRequest<B> for DefaultOnRequest {
-    fn on_request(&mut self, request: &Request<B>, _: &Span) {
-        log::info!(
-            " {} {} started processing request",
-            request.method(),
-            request.uri().path()
-        );
+    fn on_request(&mut self, request: &http::request::Request<B>, span: &Span) {
+            log::info!(
+                " {} {} started processing request",
+                request.method(),
+                request.uri().path()
+            );
     }
 }

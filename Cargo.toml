@@ -59,8 +59,8 @@ axum = { version = "0.7.2", features = ['default', 'macros'] }
 # tower
 tower-service = { version = "0.3.2" }                   # 这是中间接口
 tower-layer = { version = "0.3.2" }                     # 这是中间件接口
-tower = { version = "0.4.0", features = ["full"] }
-tower-http = { version = "0.4.0", features = ["full"] }
+tower = { version = "0.4.13", features = ["full"] }     # 所有实现
+tower-http = { version = "0.5.0", features = ["full"] }
 
 # trace
 tracing = "0.1"
