@@ -48,8 +48,9 @@ http = { version = "1.0.0" }
 http-body = { version = "1.0.0" }
 
 # grpc
-hyper = { version = "0.14.15", features = ["full"] }
-hyper-tls = { version = "0.5.0" }
+hyper = { version = "1.0.1", features = ["full"] }
+hyper-util = { version = "0.1", features = ["tokio", "server-auto", "http1"] }
+hyper-tls = "0.6.0"
 tonic = { version = "0.10.2" }
 tonic-health = { version = "0.10.2" }
 
@@ -87,6 +88,7 @@ bamboo-utils = { path = "./bamboo-utils"}
 bamboo-status = { path = "./bamboo-status"}
 bamboo-log = { path = "./bamboo-log"}
 bamboo-boot = { path = "./bamboo-boot"}
+bamboo-tower-http = { path = "./bamboo-tower-http"}
 
 
 

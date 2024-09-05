@@ -1,4 +1,4 @@
-use api::errors::Status;
+use bamboo_status::errors::Status;
 use async_trait::async_trait;
 use axum::extract::{Form, FromRequest, rejection::FormRejection, Request, Json};
 use axum::extract::rejection::{JsonRejection, MissingJsonContentType};

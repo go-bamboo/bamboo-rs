@@ -9,6 +9,7 @@ edition.workspace = true
 [dependencies]
 bamboo-status = { workspace = true }
 bamboo-boot = { workspace = true }
+bamboo-tower-http = { workspace = true }
 
 # tokio
 async-trait = { workspace = true }
@@ -16,10 +17,14 @@ tokio = { workspace = true }
 tokio-stream = { workspace = true }
 tokio-graceful = { workspace = true }
 
+
 log = { workspace = true }
 serde = { workspace = true }
 
 # http
+hyper = { workspace = true }
+hyper-util = { workspace = true }
+tonic = { workspace = true }
 axum = { workspace = true }
 
 # tower
@@ -27,3 +32,6 @@ tower-service = { workspace = true }
 tower-layer = { workspace = true }
 tower = { workspace = true }
 tower-http = { workspace = true }
+
+bytes = { workspace = true }
+validator = { workspace = true }

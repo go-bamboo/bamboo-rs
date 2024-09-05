@@ -14,18 +14,29 @@ use serde::{Deserialize, Serialize};
 use std::{net::SocketAddr, sync::Arc, time::Duration};
 use axum::http::Request;
 use axum::routing::post;
+use hyper::body::Incoming;
+use hyper_util::rt::TokioIo;
+use tokio::sync::watch;
 use tokio_graceful::ShutdownGuard;
 use tower::ServiceBuilder;
-use tower_http::{timeout::TimeoutLayer, ServiceBuilderExt};
+use tower_http::{timeout::TimeoutLayer, ServiceBuilderExt, LatencyUnit};
 use tower_http::metrics::InFlightRequestsLayer;
-use tower_http::trace::TraceLayer;
+use tower_http::trace::{DefaultMakeSpan, TraceLayer};
+use tower_service::Service;
 use bamboo_boot::plugin::Plugin;
+use bamboo_tower_http::{request_id::MyMakeRequestId,
+                        log::{
+                            on_request::DefaultOnRequest,
+                            on_body_chunk::DefaultOnBodyChunk,
+                            on_failure::DefaultOnFailure,
+                            on_response::DefaultOnResponse,
+                        },
+};
+
 
 #[async_trait]
 pub trait AppState {
-    async fn open_eth_order(&self) -> Result<()>;
-    async fn tick(&self) -> Result<()>;
-    async fn tick_dta(&mut self) -> Result<()>;
+    // async fn route(&self, Router<S>) -> Result<()>;
 }
 
 #[derive(Debug, Default, Serialize, Deserialize, Clone)]
@@ -37,16 +48,20 @@ pub trait Config {
     fn http(&self) -> &Http;
 }
 
-pub struct Server<C, R> {
+pub struct Server<C, R, S> {
     conf: Arc<C>,
     r: R,
+    s: S,
 }
 
-impl <C, R> Server<C, R> {
-    fn new(conf: Arc<C>, r: R) ->Self {
+impl<C, R, S> Server<C, R, S>
+    where S: Clone
+{
+    fn new(conf: Arc<C>, r: R, s: S) -> Self {
         Self {
             conf,
-            r
+            r,
+            s,
         }
     }
 
@@ -101,41 +116,24 @@ impl <C, R> Server<C, R> {
 
         // Build route service
         Router::new()
-            .route("/status", get(status))
-            .route("/chain/createAddressByMnemonic", post(create_address_by_mnemonic))
-            .route("/chain/createAddressByMnemonic1", post(create_address_by_mnemonic1))
-            .route("/chain/getBalance", post(get_balance))
-            .route("/chain/free/:master/:gas_add", post(miner_fee1))
-            .route(
-                "/chain/createAssociatedAccount",
-                post(create_associated_account),
-            )
-            .route("/chain/transferTo", post(transfer_to))
-            // .route("/chain/getLastBlockHeight", post(get_last_block_height))
-            // .route(
-            //     "/chain/getBlockHashByHeight/:height",
-            //     post(get_block_hash_by_height),
-            // )
-            // .route(
-            //     "/chain/getBlockHashByHeight1/:height",
-            //     post(get_block_hash_by_height1),
-            // )
             .layer(middleware)
-            .with_state(state)
+            .with_state(self.s.clone())
     }
 }
 
-impl<C, R> Plugin for Server<C, R>
-    where C: Config
+impl<C, R, S> Plugin for Server<C, R, S>
+    where C: Config + Send + Sync + 'static,
+          R: Send + Sync + 'static,
+          S: Send + Sync + 'static
 {
     async fn serve(&self, guard: ShutdownGuard) -> AnyResult<()> {
 
 
         // Create a regular axum app.
-        let app = app(state);
+        let app = self.app();
 
         // Run our service
-        let addr = conf.server.http.address.parse::<SocketAddr>()?;
+        let addr = self.conf.http().address.parse::<SocketAddr>()?;
         let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
         log::info!("Http Listening on {}", addr);
 
@@ -266,7 +264,5 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn valid_send_tran() {
-
-    }
+    async fn valid_send_tran() {}
 }
