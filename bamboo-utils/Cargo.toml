@@ -1,0 +1,10 @@
+[package]
+name = "bamboo-utils"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+async-trait = { workspace = true }

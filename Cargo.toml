@@ -1,5 +1,5 @@
 [workspace]
-members = ["bamboo-boot", "bamboo-config", "bamboo-log", "bamboo-registry", "bamboo-rest", "bamboo-rpc", "bamboo-status", "bamboo-tracing"]
+members = ["bamboo-boot", "bamboo-config", "bamboo-log", "bamboo-registry", "bamboo-rest", "bamboo-rpc", "bamboo-status", "bamboo-tower", "bamboo-tower-http", "bamboo-tracing", "bamboo-utils"]
 
 [workspace.package]
 version = "1.0.0"
@@ -10,20 +10,22 @@ edition = "2021"
 
 [workspace.dependencies]
 
+# tokio
 async-trait = "0.1.77"
 futures = "0.3.28"
 futures-util = "0.3"
 futures-core = "0.3"
-chrono = { version = "0.4.38", features = ["serde"] }
-thiserror = { version = "1.0.40" }
-anyhow = { version = "1.0.86" }
-dashmap = "6.0.1"
-
-# tokio
 tokio = { version = "1.29.0", features = ["full"] }
 tokio-stream = { version = "0.1.14", features = ["sync", "net"] }
 tokio-graceful = "0.1.6"
 
+# st
+chrono = { version = "0.4.38", features = ["serde"] }
+dashmap = "6.0.1"
+
+# error
+thiserror = { version = "1.0.40" }
+anyhow = { version = "1.0.86" }
 
 # serde
 serde = { version = "1.0.163", features = ["derive"] }
@@ -41,6 +43,10 @@ config = { git = "https://github.com/go-bamboo/config-rs.git" }
 # log
 log = "0.4.14"
 
+# transport
+http = { version = "1.0.0" }
+http-body = { version = "1.0.0" }
+
 # grpc
 hyper = { version = "0.14.15", features = ["full"] }
 hyper-tls = { version = "0.5.0" }
@@ -55,6 +61,9 @@ tower-service = { version = "0.3.2" }                   # 这是中间接口
 tower-layer = { version = "0.3.2" }                     # 这是中间件接口
 tower = { version = "0.4.0", features = ["full"] }
 tower-http = { version = "0.4.0", features = ["full"] }
+
+# trace
+tracing = "0.1"
 
 # ta
 polars = "0.36.2"
@@ -74,6 +83,7 @@ rust_decimal = { version = "1.30", features = ["serde", "serde-str"] }
 rust_decimal_macros = "1.30"
 
 # lib
+bamboo-utils = { path = "./bamboo-utils"}
 bamboo-status = { path = "./bamboo-status"}
 bamboo-log = { path = "./bamboo-log"}
 bamboo-boot = { path = "./bamboo-boot"}

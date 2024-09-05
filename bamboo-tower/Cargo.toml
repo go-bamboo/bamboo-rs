@@ -1,0 +1,12 @@
+[package]
+name = "bamboo-tower"
+version.workspace = true
+authors.workspace = true
+repository.workspace = true
+license.workspace = true
+edition.workspace = true
+
+[dependencies]
+tower-service = { workspace = true }
+tower-layer = { workspace = true }
+tower = { workspace = true }
