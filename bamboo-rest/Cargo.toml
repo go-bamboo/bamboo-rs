@@ -7,3 +7,12 @@ license.workspace = true
 edition.workspace = true
 
 [dependencies]
+bamboo-status = { workspace = true }
+bamboo-boot = { workspace = true }
+tokio = { workspace = true }
+tokio-stream = { workspace = true }
+tokio-graceful = { workspace = true }
+log = { workspace = true }
+serde = { workspace = true }
+
+axum = { workspace = true }

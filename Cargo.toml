@@ -48,7 +48,7 @@ tonic = { version = "0.10.2" }
 tonic-health = { version = "0.10.2" }
 
 # http
-axum = { version = "0.6.20" }
+axum = { version = "0.7.2", features = ['default', 'macros'] }
 
 # tower
 tower-service = { version = "0.3.2" }                   # 这是中间接口
