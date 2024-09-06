@@ -1,9 +1,11 @@
 use bamboo_status::status::{Result, AnyResult};
 use hyper::header::{self};
 use serde::{Deserialize, Serialize};
-use std::{iter::once, net::SocketAddr, time::Duration};
-use std::convert::Infallible;
-use std::sync::Arc;
+use std::{
+    iter::once, net::SocketAddr, time::Duration,
+    convert::Infallible,
+    sync::Arc,
+};
 use tokio::net::TcpListener;
 use tokio_graceful::ShutdownGuard;
 use tokio_stream::wrappers::TcpListenerStream;
@@ -14,7 +16,6 @@ use tower_http::{
     sensitive_headers::SetSensitiveHeadersLayer,
     trace::{DefaultMakeSpan, TraceLayer},
 };
-
 use tonic::{
     Status, async_trait, Request, Response,
     body::BoxBody,
@@ -39,7 +40,7 @@ pub struct Server<C, S> {
 }
 
 impl<C, S> Server<C, S> where
-    S: Service<Request<Body>, Response=Response<BoxBody>, Error=Infallible>
+    S: Service<tonic::codegen::http::Request<Body>, Response=tonic::codegen::http::Response<BoxBody>, Error=Infallible>
     + NamedService
     + Clone
     + Send
@@ -54,9 +55,10 @@ impl<C, S> Server<C, S> where
     }
 }
 
+#[async_trait]
 impl<C, S> Plugin for Server<C, S> where
     C: Config + Send + Sync + 'static,
-    S: Service<Request<Body>, Response=Response<BoxBody>, Error=Infallible>
+    S: Service<tonic::codegen::http::request::Request<Body>, Response=Response<BoxBody>, Error=Infallible>
     + NamedService
     + Clone
     + Send
@@ -65,8 +67,6 @@ impl<C, S> Plugin for Server<C, S> where
     S::Future: Send + 'static,
 {
     async fn serve(&self, guard: ShutdownGuard) -> AnyResult<()> {
-        // let s = ServerImpl::new()?;
-        // let service = QuantServer::new(s);
         // Response classifier that doesn't consider `Ok`, `Invalid Argument`, or `Not Found` as
         // failures
         let classifier = GrpcErrorsAsFailures::new()
