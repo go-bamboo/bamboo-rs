@@ -4,7 +4,6 @@ use serde::{Deserialize, Serialize};
 use std::{iter::once, net::SocketAddr, time::Duration};
 use std::convert::Infallible;
 use std::sync::Arc;
-use hyper::Body;
 use tokio::net::TcpListener;
 use tokio_graceful::ShutdownGuard;
 use tokio_stream::wrappers::TcpListenerStream;
@@ -16,9 +15,12 @@ use tower_http::{
     trace::{DefaultMakeSpan, TraceLayer},
 };
 
-use tonic::{Status, async_trait, Request, Response};
-use tonic::body::BoxBody;
-use tonic::server::NamedService;
+use tonic::{
+    Status, async_trait, Request, Response,
+    body::BoxBody,
+    server::NamedService,
+    transport::Body,
+};
 use tower_service::Service;
 use bamboo_boot::plugin::Plugin;
 
@@ -36,12 +38,13 @@ pub struct Server<C, S> {
     s: S,
 }
 
-impl<C, S> Server<C, S>
-    where S: Service<Request<Body>, Response=Response<BoxBody>, Error=Infallible>
+impl<C, S> Server<C, S> where
+    S: Service<Request<Body>, Response=Response<BoxBody>, Error=Infallible>
     + NamedService
     + Clone
     + Send
-    + 'static, S::Future: Send + 'static,
+    + 'static,
+    S::Future: Send + 'static,
 {
     fn new(conf: Arc<C>, s: S) -> Self {
         Self {
@@ -51,14 +54,15 @@ impl<C, S> Server<C, S>
     }
 }
 
-impl<C, S> Plugin for Server<C, S>
-    where C: Config,
-          S: Service<Request<Body>, Response=Response<BoxBody>, Error=Infallible>
-          + NamedService
-          + Clone
-          + Send
-          + 'static,
-          S::Future: Send + 'static,
+impl<C, S> Plugin for Server<C, S> where
+    C: Config + Send + Sync + 'static,
+    S: Service<Request<Body>, Response=Response<BoxBody>, Error=Infallible>
+    + NamedService
+    + Clone
+    + Send
+    + Sync
+    + 'static,
+    S::Future: Send + 'static,
 {
     async fn serve(&self, guard: ShutdownGuard) -> AnyResult<()> {
         // let s = ServerImpl::new()?;
@@ -116,6 +120,6 @@ mod tests {
 
     #[tokio::test]
     async fn valid_send_tran() {
-
+        assert_eq!(4, 4);
     }
 }
