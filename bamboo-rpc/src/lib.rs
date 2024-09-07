@@ -9,14 +9,15 @@ use std::{
 use tokio::net::TcpListener;
 use tokio_graceful::ShutdownGuard;
 use tokio_stream::wrappers::TcpListenerStream;
-use tower::ServiceBuilder;
+use tower::{
+    Service, ServiceBuilder,
+};
 use tonic::{
     Status, async_trait, Request, Response,
     body::BoxBody,
     server::NamedService,
     transport::Body,
 };
-use tower_service::Service;
 use bamboo_boot::plugin::Plugin;
 
 #[derive(Debug, Default, Serialize, Deserialize, Clone)]

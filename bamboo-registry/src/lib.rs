@@ -1,3 +1,5 @@
+//! [bamboo-registry](https://go-bamboo.github.io/docs/plugins/bamboo-registry)
+
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }

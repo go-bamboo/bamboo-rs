@@ -1,3 +1,4 @@
+//! [bamboo-boot](https://go-bamboo.github.io/docs/plugins/bamboo-boot)
 pub mod app;
 pub mod builder;
 pub mod plugin;
