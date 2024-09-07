@@ -26,13 +26,14 @@ use tower_http::{
 };
 use tower_service::Service;
 use bamboo_boot::plugin::Plugin;
-use bamboo_tower_http::{request_id::MyMakeRequestId,
-                        log::{
-                            on_request::DefaultOnRequest,
-                            on_body_chunk::DefaultOnBodyChunk,
-                            on_failure::DefaultOnFailure,
-                            on_response::DefaultOnResponse,
-                        },
+use bamboo_tower_http::{
+    request_id::MyMakeRequestId,
+    log::{
+        on_request::DefaultOnRequest,
+        on_body_chunk::DefaultOnBodyChunk,
+        on_failure::DefaultOnFailure,
+        on_response::DefaultOnResponse,
+    },
 };
 
 
