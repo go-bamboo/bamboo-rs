@@ -7,6 +7,8 @@ license.workspace = true
 edition.workspace = true
 
 [dependencies]
+hyper = { workspace = true }
+tonic = { workspace = true }
 tower-service = { workspace = true }
 tower-layer = { workspace = true }
 tower = { workspace = true }
