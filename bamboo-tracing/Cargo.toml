@@ -7,3 +7,9 @@ license.workspace = true
 edition.workspace = true
 
 [dependencies]
+tower-service = { workspace = true }
+tower-layer = { workspace = true }
+tower = { workspace = true }
+opentelemetry = { workspace = true }
+opentelemetry_sdk = { workspace = true }
+opentelemetry-stdout = { workspace = true }

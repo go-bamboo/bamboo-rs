@@ -20,7 +20,6 @@ tokio-stream = { version = "0.1.14", features = ["sync", "net"] }
 tokio-graceful = "0.1.6"
 
 # st
-chrono = { version = "0.4.38", features = ["serde"] }
 dashmap = "6.0.1"
 
 # error
@@ -66,29 +65,17 @@ tower-http = { version = "0.5.0", features = ["full"] }
 # trace
 tracing = "0.1"
 
-# ta
-polars = "0.36.2"
-ta = "0.5.0"
-
-# db
-redis = { version = "0.24.0", features = ["tokio-comp"] }
-sea-orm = { version = "0.12.9", features = [
-    "debug-print",
-    "runtime-tokio-native-tls",
-    "sqlx-mysql",
-] }
-clickhouse-rs = { git = "https://github.com/suharev7/clickhouse-rs" }
-
-# decimal
-rust_decimal = { version = "1.30", features = ["serde", "serde-str"] }
-rust_decimal_macros = "1.30"
+# otel
+opentelemetry = { version = "0.24.0" }
+opentelemetry_sdk = { version = "0.24.0" }
+opentelemetry-stdout = { version = "0.24.0" }
 
 # lib
-bamboo-utils = { path = "./bamboo-utils"}
-bamboo-status = { path = "./bamboo-status"}
-bamboo-log = { path = "./bamboo-log"}
-bamboo-boot = { path = "./bamboo-boot"}
-bamboo-tower-http = { path = "./bamboo-tower-http"}
+bamboo-utils = { path = "./bamboo-utils" }
+bamboo-status = { path = "./bamboo-status" }
+bamboo-log = { path = "./bamboo-log" }
+bamboo-boot = { path = "./bamboo-boot" }
+bamboo-tower-http = { path = "./bamboo-tower-http" }
 
 
 
