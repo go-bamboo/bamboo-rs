@@ -10,12 +10,6 @@ use tokio::net::TcpListener;
 use tokio_graceful::ShutdownGuard;
 use tokio_stream::wrappers::TcpListenerStream;
 use tower::ServiceBuilder;
-use tower_http::{
-    classify::{GrpcCode, GrpcErrorsAsFailures, SharedClassifier},
-    compression::CompressionLayer,
-    sensitive_headers::SetSensitiveHeadersLayer,
-    trace::{DefaultMakeSpan, TraceLayer},
-};
 use tonic::{
     Status, async_trait, Request, Response,
     body::BoxBody,
@@ -39,14 +33,7 @@ pub struct Server<C, S> {
     s: S,
 }
 
-impl<C, S> Server<C, S> where
-    S: Service<tonic::codegen::http::Request<Body>, Response=tonic::codegen::http::Response<BoxBody>, Error=Infallible>
-    + NamedService
-    + Clone
-    + Send
-    + 'static,
-    S::Future: Send + 'static,
-{
+impl<C, S> Server<C, S> {
     fn new(conf: Arc<C>, s: S) -> Self {
         Self {
             conf,
@@ -67,25 +54,19 @@ impl<C, S> Plugin for Server<C, S> where
     S::Future: Send + 'static,
 {
     async fn serve(&self, guard: ShutdownGuard) -> AnyResult<()> {
-        // Response classifier that doesn't consider `Ok`, `Invalid Argument`, or `Not Found` as
-        // failures
-        let classifier = GrpcErrorsAsFailures::new()
-            .with_success(GrpcCode::InvalidArgument)
-            .with_success(GrpcCode::NotFound);
-
         // Build our middleware stack
         let layer = ServiceBuilder::new()
             // Set a timeout
             .timeout(Duration::from_secs(10))
             // Compress responses
-            .layer(CompressionLayer::new())
+            // .layer(CompressionLayer::new())
             // Mark the `Authorization` header as sensitive so it doesn't show in logs
-            .layer(SetSensitiveHeadersLayer::new(once(header::AUTHORIZATION)))
+            // .layer(SetSensitiveHeadersLayer::new(once(header::AUTHORIZATION)))
             // Log all requests and responses
-            .layer(
-                TraceLayer::new(SharedClassifier::new(classifier))
-                    .make_span_with(DefaultMakeSpan::new().include_headers(true)),
-            )
+            // .layer(
+            //     TraceLayer::new(SharedClassifier::new(classifier))
+            //         .make_span_with(DefaultMakeSpan::new().include_headers(true)),
+            // )
             .into_inner();
 
         let (mut health_reporter, health_service) = tonic_health::server::health_reporter();
@@ -119,7 +100,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn valid_send_tran() {
+    async fn valid_serve() {
         assert_eq!(4, 4);
     }
 }
