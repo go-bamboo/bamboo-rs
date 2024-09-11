@@ -17,14 +17,14 @@ pub struct App<C> {
 
 impl<C> App<C>
 {
-    fn new(conf: Arc<C>) -> Self {
+    pub fn new(conf: Arc<C>) -> Self {
         Self {
             conf,
             components: Registry::new(),
         }
     }
 
-    fn with(&self, p: PluginRef) ->Result<()> {
+    pub fn with(&self, p: PluginRef) ->Result<()> {
         self.components.insert(p.name().to_string(), p);
         Ok(())
     }
