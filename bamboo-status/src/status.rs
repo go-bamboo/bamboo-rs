@@ -97,27 +97,27 @@ impl From<tonic::Status> for Status {
 //     }
 // }
 //
-// impl From<ValidationError> for Status {
-//     fn from(value: ValidationError) -> Self {
-//         Status {
-//             code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
-//             reason: crate::tran::ecode::ErrorReason::ValidationError.as_str_name().to_string(),
-//             message: value.to_string(),
-//             metadata: Default::default(),
-//         }
-//     }
-// }
-//
-// impl From<ValidationErrors> for Status {
-//     fn from(value: ValidationErrors) -> Self {
-//         Status {
-//             code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
-//             reason: crate::tran::ecode::ErrorReason::ValidationError.as_str_name().to_string(),
-//             message: value.to_string(),
-//             metadata: Default::default(),
-//         }
-//     }
-// }
+impl From<ValidationError> for Status {
+    fn from(value: ValidationError) -> Self {
+        Status {
+            code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
+            reason: "ValidationError".to_string(),
+            message: value.to_string(),
+            metadata: Default::default(),
+        }
+    }
+}
+
+impl From<ValidationErrors> for Status {
+    fn from(value: ValidationErrors) -> Self {
+        Status {
+            code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
+            reason: "ValidationErrors".to_string(),
+            message: value.to_string(),
+            metadata: Default::default(),
+        }
+    }
+}
 //
 // impl From<FormRejection> for Status {
 //     fn from(value: FormRejection) -> Self {

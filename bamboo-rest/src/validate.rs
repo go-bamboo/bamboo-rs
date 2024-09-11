@@ -1,11 +1,10 @@
-use bamboo_status::errors::Status;
 use async_trait::async_trait;
-use axum::extract::{Form, FromRequest, rejection::FormRejection, Request, Json};
-use axum::extract::rejection::{JsonRejection, MissingJsonContentType};
-use bytes::Bytes;
-use serde::{de::DeserializeOwned, Deserialize};
+use axum::extract::{FromRequest, Json, Request};
+use axum::extract::rejection::JsonRejection;
+use serde::de::DeserializeOwned;
 use validator::Validate;
-use tonic::{Request as TonicRequest, Response};
+
+use bamboo_status::errors::Status;
 
 // #[derive(Debug, Clone, Copy, Default)]
 // pub struct ValidatedForm<T>(pub T);
@@ -34,7 +33,7 @@ impl<T, S> FromRequest<S> for ValidatedJson<T>
     where
         T: DeserializeOwned + Validate,
         S: Send + Sync,
-        Json<T>: FromRequest<S, Rejection=JsonRejection>,
+        Json<T>: FromRequest<S, Rejection=Status>,
 {
     type Rejection = Status;
 

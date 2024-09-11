@@ -58,7 +58,9 @@ pub struct Server<C, R, S> {
 }
 
 impl<C, R, S> Server<C, R, S>
-    where S: Clone
+    where C: Config + Send + Sync + 'static,
+          R: Send + Sync + 'static,
+          S: Send + Sync + 'static + Clone
 {
     fn new(conf: Arc<C>, r: R, s: S) -> Self {
         Self {
@@ -79,11 +81,11 @@ impl<C, R, S> Server<C, R, S>
         let (in_flight_requests_layer, counter) = InFlightRequestsLayer::pair();
 
         // Spawn a task that will receive the number of in-flight requests every 10 seconds.
-        tokio::spawn(
-            counter.run_emitter(Duration::from_secs(10), |count| async move {
-                self.update_in_flight_requests_metric(count).await;
-            }),
-        );
+        // tokio::spawn(
+        //     counter.run_emitter(Duration::from_secs(10), |count| async move {
+        //         self.update_in_flight_requests_metric(count).await;
+        //     }),
+        // );
 
         // Build our database for holding the key/value pairs
         let sensitive_headers: Arc<[_]> = vec![header::AUTHORIZATION, header::COOKIE].into();
@@ -124,10 +126,11 @@ impl<C, R, S> Server<C, R, S>
     }
 }
 
+#[async_trait]
 impl<C, R, S> Plugin for Server<C, R, S>
     where C: Config + Send + Sync + 'static,
           R: Send + Sync + 'static,
-          S: Send + Sync + 'static
+          S: Send + Sync + 'static + Clone
 {
     async fn serve(&self, guard: ShutdownGuard) -> AnyResult<()> {
 
