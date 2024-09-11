@@ -3,6 +3,11 @@ pub mod app;
 pub mod builder;
 pub mod plugin;
 mod component;
+pub mod sync;
+pub mod time;
+
+pub use tokio::{main, select, spawn};
+pub use async_trait::async_trait;
 
 pub fn add(left: usize, right: usize) -> usize {
     left + right
