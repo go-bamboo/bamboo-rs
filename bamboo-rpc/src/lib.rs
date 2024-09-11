@@ -1,5 +1,3 @@
-use bamboo_status::status::{Result, AnyResult};
-use hyper::header::{self};
 use serde::{Deserialize, Serialize};
 use std::{
     iter::once, net::SocketAddr, time::Duration,
@@ -12,15 +10,18 @@ use tokio_stream::wrappers::TcpListenerStream;
 use tower::{
     Service, ServiceBuilder,
 };
-pub use http::{Request, Response};
+pub use http::{Request as HttpRequest, Response as HttpResponse};
+use hyper::header::{self};
 pub use tonic::{
     Code,
     Status, async_trait,
     body::BoxBody,
     server::NamedService,
     transport::Body,
+    Request, Response,
 };
 use bamboo_boot::plugin::Plugin;
+use bamboo_status::status::{Result, AnyResult};
 
 #[derive(Debug, Default, Serialize, Deserialize, Clone)]
 pub struct Grpc {
@@ -48,7 +49,7 @@ impl<C, S> Server<C, S> {
 #[async_trait]
 impl<C, S> Plugin for Server<C, S> where
     C: Config + Send + Sync + 'static,
-    S: Service<Request<BoxBody>, Response = Response<BoxBody>, Error = Infallible>
+    S: Service<HttpRequest<BoxBody>, Response=HttpResponse<BoxBody>, Error=Infallible>
     + NamedService
     + Clone
     + Send

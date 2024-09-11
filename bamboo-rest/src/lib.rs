@@ -35,7 +35,7 @@ use bamboo_tower_http::{
         on_response::DefaultOnResponse,
     },
 };
-
+pub use tonic::service::RoutesBuilder;
 
 #[async_trait]
 pub trait AppState {
