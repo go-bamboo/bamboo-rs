@@ -12,8 +12,9 @@ use tokio_stream::wrappers::TcpListenerStream;
 use tower::{
     Service, ServiceBuilder,
 };
-use http::{Request, Response};
-use tonic::{
+pub use http::{Request, Response};
+pub use tonic::{
+    Code,
     Status, async_trait,
     body::BoxBody,
     server::NamedService,

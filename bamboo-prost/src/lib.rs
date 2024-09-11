@@ -1,6 +1,6 @@
+pub use prost::{Message, Name};
+pub use prost_types::Any;
 
-pub use async_trait::async_trait;
-pub use bytes::Bytes;
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }

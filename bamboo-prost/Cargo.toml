@@ -1,5 +1,5 @@
 [package]
-name = "bamboo-utils"
+name = "bamboo-prost"
 version.workspace = true
 authors.workspace = true
 repository.workspace = true
@@ -7,5 +7,5 @@ license.workspace = true
 edition.workspace = true
 
 [dependencies]
-async-trait = { workspace = true }
-bytes = { workspace = true }
+prost = { workspace = true }
+prost-types = { workspace = true }

@@ -1,5 +1,5 @@
 [workspace]
-members = ["bamboo-boot", "bamboo-config", "bamboo-log", "bamboo-registry", "bamboo-rest", "bamboo-rpc", "bamboo-status", "bamboo-tower", "bamboo-tower-http", "bamboo-tracing", "bamboo-utils"]
+members = ["bamboo-boot", "bamboo-config", "bamboo-log", "bamboo-prost", "bamboo-registry", "bamboo-rest", "bamboo-rpc", "bamboo-status", "bamboo-tower", "bamboo-tower-http", "bamboo-tracing", "bamboo-utils"]
 
 [workspace.package]
 version = "1.0.0"
@@ -32,6 +32,7 @@ serde_json = { version = "1.0" }
 
 # protobuf
 prost = "0.12.3"
+prost-types = "0.12.3"
 bytes = "1.4.0"
 validator = { version = "0.16.1", features = ["derive"] }
 

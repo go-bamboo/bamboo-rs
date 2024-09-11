@@ -2,7 +2,7 @@ use std::any::Any;
 use std::ops::Deref;
 use std::sync::Arc;
 use async_trait::async_trait;
-use tokio_graceful::ShutdownGuard;
+pub use tokio_graceful::ShutdownGuard;
 use bamboo_status::status::AnyResult;
 
 #[async_trait]
