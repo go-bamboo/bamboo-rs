@@ -12,8 +12,9 @@ use tokio_stream::wrappers::TcpListenerStream;
 use tower::{
     Service, ServiceBuilder,
 };
+use http::{Request, Response};
 use tonic::{
-    Status, async_trait, Request, Response,
+    Status, async_trait,
     body::BoxBody,
     server::NamedService,
     transport::Body,
@@ -46,7 +47,7 @@ impl<C, S> Server<C, S> {
 #[async_trait]
 impl<C, S> Plugin for Server<C, S> where
     C: Config + Send + Sync + 'static,
-    S: Service<tonic::codegen::http::request::Request<Body>, Response=Response<BoxBody>, Error=Infallible>
+    S: Service<Request<BoxBody>, Response = Response<BoxBody>, Error = Infallible>
     + NamedService
     + Clone
     + Send

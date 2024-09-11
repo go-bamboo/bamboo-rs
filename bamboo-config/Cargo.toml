@@ -21,7 +21,7 @@ lazy_static = "1.4"
 serde = { workspace = true }
 nom = "7"
 
-async-trait = { workspace = true }
+async-trait = { workspace = true, optional = true }
 toml = { version = "0.8", optional = true }
 serde_json = { version = "1.0", optional = true }
 yaml-rust2 = { version = "0.8", optional = true }
