@@ -75,28 +75,28 @@ impl From<tonic::Status> for Status {
     }
 }
 
-// impl From<TryLockError> for Status {
-//     fn from(value: TryLockError) -> Self {
-//         Status {
-//             code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
-//             reason: crate::tran::ecode::ErrorReason::TryLockError.as_str_name().to_string(),
-//             message: value.to_string(),
-//             metadata: Default::default(),
-//         }
-//     }
-// }
-//
-// impl From<tonic::transport::Error> for Status {
-//     fn from(value: Error) -> Self {
-//         Status {
-//             code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
-//             reason: crate::tran::ecode::ErrorReason::TonicTransportErr.as_str_name().to_string(),
-//             message: value.to_string(),
-//             metadata: Default::default(),
-//         }
-//     }
-// }
-//
+impl From<TryLockError> for Status {
+    fn from(value: TryLockError) -> Self {
+        Status {
+            code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
+            reason: "TryLockError".to_string(),
+            message: value.to_string(),
+            metadata: Default::default(),
+        }
+    }
+}
+
+impl From<tonic::transport::Error> for Status {
+    fn from(value: Error) -> Self {
+        Status {
+            code: StatusCode::INTERNAL_SERVER_ERROR.as_u16() as i32,
+            reason: "TonicTransportErr".to_string(),
+            message: value.to_string(),
+            metadata: Default::default(),
+        }
+    }
+}
+
 impl From<ValidationError> for Status {
     fn from(value: ValidationError) -> Self {
         Status {
