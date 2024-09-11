@@ -9,3 +9,6 @@ edition.workspace = true
 [dependencies]
 async-trait = { workspace = true }
 bytes = { workspace = true }
+chrono = { workspace = true }
+humantime = { workspace = true }
+url = { workspace = true }

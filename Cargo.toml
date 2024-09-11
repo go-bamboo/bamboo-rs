@@ -1,5 +1,5 @@
 [workspace]
-members = ["bamboo-boot", "bamboo-config", "bamboo-log", "bamboo-prost", "bamboo-registry", "bamboo-rest", "bamboo-rpc", "bamboo-status", "bamboo-tower", "bamboo-tower-http", "bamboo-tracing", "bamboo-utils"]
+members = ["bamboo-boot", "bamboo-cache", "bamboo-config", "bamboo-log", "bamboo-prost", "bamboo-registry", "bamboo-rest", "bamboo-rpc", "bamboo-status", "bamboo-tower", "bamboo-tower-http", "bamboo-tracing", "bamboo-utils"]
 
 [workspace.package]
 version = "1.0.0"
@@ -38,6 +38,13 @@ validator = { version = "0.16.1", features = ["derive"] }
 
 # log
 log = "0.4.14"
+
+# time
+chrono = { version = "0.4.24", features = ["serde"] }
+humantime = "2.1.0"
+
+# url
+url = "2.5.1"
 
 # transport
 http = { version = "1" }
