@@ -62,7 +62,7 @@ impl<C, R, S> Server<C, R, S>
           R: Send + Sync + 'static,
           S: Send + Sync + 'static + Clone
 {
-    fn new(conf: Arc<C>, r: R, s: S) -> Self {
+    pub fn new(conf: Arc<C>, r: R, s: S) -> Self {
         Self {
             conf,
             r,

@@ -17,7 +17,7 @@ pub trait Plugin: Any + Send + Sync {
 pub struct PluginRef(Arc<dyn Plugin>);
 
 impl PluginRef {
-    pub(crate) fn new<T: Plugin>(plugin: T) -> Self {
+    pub fn new<T: Plugin>(plugin: T) -> Self {
         Self(Arc::new(plugin))
     }
 }

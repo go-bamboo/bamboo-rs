@@ -36,7 +36,7 @@ pub struct Server<C, S> {
 }
 
 impl<C, S> Server<C, S> {
-    fn new(conf: Arc<C>, s: S) -> Self {
+    pub fn new(conf: Arc<C>, s: S) -> Self {
         Self {
             conf,
             s,
