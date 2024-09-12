@@ -11,7 +11,6 @@ log = { workspace = true }
 
 # transport
 http = { workspace = true }
-http-body = { workspace = true }
 
 # tower
 tower-service = { workspace = true }

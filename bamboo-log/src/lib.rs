@@ -1,5 +1,7 @@
 //! [bamboo-log](https://go-bamboo.github.io/docs/plugins/bamboo-log)
 
+extern crate log;
+
 pub fn add(left: usize, right: usize) -> usize {
     left + right
 }

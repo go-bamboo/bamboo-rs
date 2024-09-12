@@ -48,12 +48,10 @@ url = "2.5.1"
 
 # transport
 http = { version = "1" }
-http-body = { version = "0.1" }
 
 # grpc
 hyper = { version = "1", features = ["full"] }
 hyper-util = { version = "0.1", features = ["tokio", "server-auto", "http1"] }
-hyper-tls = "0.6.0"
 tonic = { version = "0.12.2", features = ['default', "server"] }
 tonic-health = { version = "0.12.2" }
 

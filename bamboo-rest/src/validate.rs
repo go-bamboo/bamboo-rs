@@ -33,7 +33,7 @@ impl<T, S> FromRequest<S> for ValidatedJson<T>
     where
         T: DeserializeOwned + Validate,
         S: Send + Sync,
-        Json<T>: FromRequest<S, Rejection=Status>,
+        Json<T>: FromRequest<S, Rejection=JsonRejection>,
 {
     type Rejection = Status;
 
