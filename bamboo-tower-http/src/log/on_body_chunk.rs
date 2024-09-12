@@ -23,7 +23,7 @@ impl DefaultOnBodyChunk {
 
 impl OnBodyChunk<Bytes> for DefaultOnBodyChunk {
     #[inline]
-    fn on_body_chunk(&mut self, chunk: &Bytes, latency: Duration, _: &Span) {
+    fn on_body_chunk(&mut self, _chunk: &Bytes, _latency: Duration, _: &Span) {
         // log::info!(
         //     "size_bytes = {}, latency = {}ms",
         //     chunk.len(),

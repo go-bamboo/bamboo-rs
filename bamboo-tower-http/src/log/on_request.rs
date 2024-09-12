@@ -43,7 +43,7 @@ impl DefaultOnRequest {
 
 
 impl<B> OnRequest<B> for DefaultOnRequest {
-    fn on_request(&mut self, request: &http::request::Request<B>, span: &Span) {
+    fn on_request(&mut self, request: &http::request::Request<B>, _span: &Span) {
             log::info!(
                 " {} {} started processing request",
                 request.method(),
